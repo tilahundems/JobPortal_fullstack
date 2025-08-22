@@ -16,7 +16,7 @@ public class JobsController : ControllerBase
 
 
 
-    [AllowAnonymous]
+    [Authorize]
     [HttpGet]
         public async Task<IActionResult> GetJobs()
         {
@@ -36,7 +36,7 @@ public class JobsController : ControllerBase
                 }
 
 
-                [Authorize(Roles = "Admin,HR")]
+                [Authorize(Roles = "Admin")]
                 [HttpPost]
             public async Task<IActionResult> CreateJob([FromBody]Job job)
             {
@@ -67,6 +67,8 @@ public class JobsController : ControllerBase
                     return Ok(job);
         }
 
+                [Authorize(Roles = "Admin")]
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJob(int id )
         {
@@ -78,5 +80,8 @@ public class JobsController : ControllerBase
             return Ok("JOb Deleted Successfully ");
 
         }
+
+
+        
 }
 

@@ -11,10 +11,11 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap5")]
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("f4efe2d1-1052-468f-8822-2d2b8742ecd7")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("JobPortalAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+75e9c25977aaef7e0c8187a2c1d607f73256381a")]
 [assembly: System.Reflection.AssemblyProductAttribute("JobPortalAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JobPortalAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

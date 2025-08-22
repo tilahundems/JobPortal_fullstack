@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\JobPortal_Production\\Backend\\JobPortalAPI\\wwwroot\\resumes\\bc280708-05a9-4602-aa4e-20ae14a79590_schedule_me.pdf",
+      "PackagePath": "staticwebassets\\resumes\\bc280708-05a9-4602-aa4e-20ae14a79590_schedule_me.pdf"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.JobPortalAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.JobPortalAPI.props",
+      "PackagePath": "build\\JobPortalAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.JobPortalAPI.props",
+      "PackagePath": "buildMultiTargeting\\JobPortalAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.JobPortalAPI.props",
+      "PackagePath": "buildTransitive\\JobPortalAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

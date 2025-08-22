@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\Backend\\JobPortalAPI\\JobPortalAPI.csproj": {}
+    "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\JobPortal_Production\\Backend\\JobPortalAPI\\JobPortalAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\Backend\\JobPortalAPI\\JobPortalAPI.csproj": {
+    "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\JobPortal_Production\\Backend\\JobPortalAPI\\JobPortalAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\Backend\\JobPortalAPI\\JobPortalAPI.csproj",
+        "projectUniqueName": "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\JobPortal_Production\\Backend\\JobPortalAPI\\JobPortalAPI.csproj",
         "projectName": "JobPortalAPI",
-        "projectPath": "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\Backend\\JobPortalAPI\\JobPortalAPI.csproj",
+        "projectPath": "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\JobPortal_Production\\Backend\\JobPortalAPI\\JobPortalAPI.csproj",
         "packagesPath": "C:\\Users\\dtilahun\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\Backend\\JobPortalAPI\\obj\\",
+        "outputPath": "C:\\Users\\dtilahun\\Desktop\\Pro.Dev\\JObportal_Abay\\JobPortal_Production\\Backend\\JobPortalAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\dtilahun\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.AspNetCore.Identity": {
               "target": "Package",
               "version": "[2.3.1, )"
@@ -57,7 +61,7 @@
             },
             "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
-              "version": "[9.0.8, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
