@@ -31,7 +31,9 @@ public async Task<IActionResult> Apply([FromBody] ApplyDto dto)
 
     if (profile == null)
         return BadRequest("Applicant profile not found. Please create a profile first.");
-
+             if (profile.ResumeUrl == null || profile.ResumeUrl=="" )
+        return NotFound("Pls upload Resume!!.");
+         
     var job = await _context.Jobs.FindAsync(dto.JobId);
     if (job == null)
         return NotFound("Job not found.");
@@ -89,8 +91,9 @@ public async Task<IActionResult> GetApplications()
     var profile = await _context.ApplicantsProfile
         .FirstOrDefaultAsync(p => p.UserId == currentUserId);
 
-    if (profile == null)
+    if (profile == null )
         return NotFound("Profile not found.");
+       
 
     var apps = await _context.Applications
         .Where(a => a.ApplicantProfileId == profile.Id)

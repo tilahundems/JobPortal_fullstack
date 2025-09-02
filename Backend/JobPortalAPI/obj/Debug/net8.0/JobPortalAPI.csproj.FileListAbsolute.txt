@@ -404,3 +404,8 @@ C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\Jo
 C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\MailKit.dll
 C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\MimeKit.dll
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\publish\web.config
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\publish\appsettings.Development.json
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\publish\appsettings.json
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\publish\JobPortalAPI.deps.json
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\publish\JobPortalAPI.runtimeconfig.json
