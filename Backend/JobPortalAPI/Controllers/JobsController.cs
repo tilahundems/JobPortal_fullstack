@@ -8,6 +8,7 @@ namespace JobPortalAPI;
 public class JobsController : ControllerBase
 {
         private readonly AppDbContext _context;
+         private readonly static  DateTime today= DateTime.UtcNow;
         public JobsController(AppDbContext context)
         {
         _context = context;
@@ -16,11 +17,13 @@ public class JobsController : ControllerBase
 
 
 
-    [Authorize]
     [HttpGet]
         public async Task<IActionResult> GetJobs()
         {
-            var jobs = await _context.Jobs.ToListAsync();
+            
+            var jobs = await _context.Jobs.
+             Where(j=> j.Deadline >=today)
+            .ToListAsync();
              return Ok(jobs);
 
         }
@@ -29,14 +32,15 @@ public class JobsController : ControllerBase
             [HttpGet("{id}")]
                 public async Task<IActionResult> GetJob(int id)
                 {
-                    var jobs =  await _context.Jobs.FindAsync(id);
-                        if (jobs == null)
-                          return Ok(" this Job does not belongs to the DB");
-                   return Ok(jobs);
+                    var jobs =  await _context.Jobs.
+                     FindAsync(id );
+                        if (jobs == null || jobs.Deadline<today || jobs.Deadline < today)
+                          return BadRequest("Job Not Found ");
+                      return Ok(jobs);
                 }
 
 
-                [Authorize(Roles = "Admin")]
+                // [Authorize(Roles = "Admin")]
                 [HttpPost]
             public async Task<IActionResult> CreateJob([FromBody]Job job)
             {
@@ -46,7 +50,6 @@ public class JobsController : ControllerBase
                          return CreatedAtAction(nameof(GetJob), new {id=job.Id}, job);
 
             }
-
             [Authorize(Roles = "Admin,HR")]
             [HttpPut("{id}")]
         public async Task<IActionResult> UpdateJob(int id,Job updatedJob)

@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,35 +19,8 @@ public class ApplicationsController:ControllerBase
         _context = context;
         _userManager = userManager;
     }
-
-    // // Apply to a job
-    //     [HttpPost("Apply")]
-    //     public async Task<IActionResult> Apply([FromBody] Application application)
-    //     {
-    //             // var user = await _userManager.FindByNameAsync(application.ApplicantProfileId);
-    //           var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Identity User Id
-    //         if (userId == null)
-    //         return Unauthorized("You Aust Login  First To Apply");
-    //         var profile =_context.ApplicantsProfile
-    //          .FirstOrDefaultAsync(p=>p.UserId==userId);
-    //          if (profile == null)
-    //      return BadRequest("Applicant profile not found. Please create a profile first.");
-    //       var job =await _context.Jobs.FindAsync(application.JobId);
-    //          if (job == null) return NotFound("Job not found.");
-    //             var applicationreq = new Application
-    //             {
-    //                 JobId = application.JobId,
-    //                 ApplicantProfileId = profile.Id.ToString(),
-    //                 AppliedDate = DateTime.UtcNow,
-    //                 CoverLetter = application.CoverLetter
-
-    //             };
-    //          _context.Applications.Add(applicationreq);
-    //          await _context.SaveChangesAsync();
-    //          return Ok(applicationreq); 
-    //     }
-
-[HttpPost("apply")]
+        [Authorize] 
+ [HttpPost("apply")]
 public async Task<IActionResult> Apply([FromBody] ApplyDto dto)
 {
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -103,12 +77,14 @@ public async Task<IActionResult> Apply([FromBody] ApplyDto dto)
 
 }
          // Get all applications
+                 [Authorize] 
+
         [HttpGet("MyApplications")]
 public async Task<IActionResult> GetApplications()
 {
     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
     if (currentUserId == null)
-        return Unauthorized("You have to login first");
+     return Unauthorized("You have to login first");
 
     var profile = await _context.ApplicantsProfile
         .FirstOrDefaultAsync(p => p.UserId == currentUserId);
@@ -143,7 +119,8 @@ public async Task<IActionResult> GetApplications()
 }
 
         // Get application for a specific job by user
-    [HttpGet("user/job/{jobId}")]
+                [Authorize] 
+    [HttpGet("job/{jobId}")]
     public async Task<IActionResult> GetApplicationByJob( int jobId)
     {
           var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -170,11 +147,10 @@ public async Task<IActionResult> GetApplications()
           
 
   // DELETE: api/Applications/{applicationId}/Withdraw
-
+        [Authorize] 
 [HttpDelete("{applicationId}/Withdraw")]
 public async Task<IActionResult> WithdrawApplication(int applicationId)
 {
-    // 1️⃣ Get the logged-in user
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
     if (userId == null)
         return Unauthorized("You must be logged in to withdraw an application.");
@@ -201,8 +177,9 @@ public async Task<IActionResult> WithdrawApplication(int applicationId)
     return Ok(new { message = "Application withdrawn successfully." });
 }
 
-
+// Implemented for Future 
 // PUT: api/Applications/{applicationId}/Update
+        [Authorize] 
 [HttpPut("{applicationId}/Update")]
 public async Task<IActionResult> UpdateApplication(int applicationId, [FromBody] ApplicationDto dto)
 {

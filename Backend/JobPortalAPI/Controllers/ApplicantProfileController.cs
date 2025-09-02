@@ -19,46 +19,6 @@ public class ApplicantProfileController:ControllerBase
         _userManager = userManager;
     }
 
-// [HttpPost("createUpdate")]
-// public async Task<IActionResult> CreateOrUpdateProfile([FromBody] ApplicantProfileDto dto)
-// {
-//     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-//     if (userId == null) return Unauthorized("You are not authorized.");
-
-//     // Check if a profile already exists
-//     var existingProfile = await _context.ApplicantsProfile
-//         .FirstOrDefaultAsync(p => p.UserId == userId);
-
-//     if (existingProfile != null)
-//     {
-//         // Update existing profile
-//         existingProfile.FullName = dto.FullName;
-//         existingProfile.Phone = dto.Phone;
-//         existingProfile.ResumeUrl = dto.ResumeUrl;
-//         existingProfile.Skills = dto.Skills;
-//         existingProfile.Education = dto.Education;
-
-//         await _context.SaveChangesAsync();
-//         return Ok(new { message = "Profile updated successfully", profile = existingProfile });
-//     }
-
-//     // Create new profile
-//     var profile = new ApplicantProfile
-//     {
-//         UserId = userId,
-//         FullName = dto.FullName,
-//         Phone = dto.Phone,
-//         ResumeUrl = dto.ResumeUrl,
-//         Skills = dto.Skills,
-//         Education = dto.Education
-//     };
-
-//     _context.ApplicantsProfile.Add(profile);
-//     await _context.SaveChangesAsync();
-
-//     return Ok(new { message = "Profile created successfully", profile });
-// }
-
 
 
 [HttpPost("createUpdate")]
@@ -66,9 +26,9 @@ public async Task<IActionResult> CreateOrUpdateProfile([FromBody] ApplicantProfi
 {
     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
     if (userId == null) return Unauthorized("You are not authorized.");
-
+           
     var existingProfile = await _context.ApplicantsProfile
-        .FirstOrDefaultAsync(p => p.UserId == userId);
+        .FirstOrDefaultAsync(p => p.UserId == "demouser");
 
     if (existingProfile != null)
     {
@@ -142,6 +102,8 @@ public async Task<IActionResult> UploadResume(int profileId, IFormFile file)
 
     var applicantProfile = await _context.ApplicantsProfile
         .FirstOrDefaultAsync(p => p.Id == profileId && p.UserId == currentUserId);
+//  var applicantProfile = await _context.ApplicantsProfile
+//         .FirstOrDefaultAsync(p => p.Id == profileId);
 
     if (applicantProfile == null)
         return NotFound("Profile not found , pls Create profile  first || you don’t have permission.");

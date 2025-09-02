@@ -28,6 +28,134 @@ public class AuthController : ControllerBase
              _config = config;
         }
 
+
+//         [HttpPost("jwt")]
+// public async Task<IActionResult> JWTAsync([FromBody] LoginDTO dto)
+// {
+//     // Validate user credentials
+//     var user = await _userManager.FindByNameAsync(dto.Username);
+//     if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+//         return Unauthorized("Invalid credentials");
+
+//     // Create claims
+//     var claims = new[]
+//     {
+//         new Claim(ClaimTypes.NameIdentifier, user.Id),
+//         new Claim(ClaimTypes.Name, dto.Username),
+//         new Claim(ClaimTypes.Role, "HR")  // adjust role dynamically if needed
+//     };
+
+//     // Signing key
+//     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("QWERTYUIOPASDFGHJKLZXCVBNM1234qw"));
+//     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+//     // Token descriptor ensures correct 'aud' and 'exp'
+//     var tokenHandler = new JwtSecurityTokenHandler();
+//     var tokenDescriptor = new SecurityTokenDescriptor
+//     {
+//         Subject = new ClaimsIdentity(claims),
+//         Expires = DateTime.UtcNow.AddHours(1),
+//         Issuer = "jobportal",
+//         Audience = "applicants",
+//         SigningCredentials = creds
+//     };
+
+//     var token = tokenHandler.CreateToken(tokenDescriptor);
+//     var tokenString = tokenHandler.WriteToken(token);
+
+//     return Ok(new { token = tokenString });
+// }
+
+
+// //         [HttpPost("jwt")]
+// // public async Task<IActionResult> JWTAsync([FromBody] LoginDTO dto)
+// // {
+// //     // Example: Validate user (replace with real DB check)
+// //     // if (dto.Username == "hradmin" && dto.Password == "password123")
+// //     // {
+// //     var user = await _userManager.FindByNameAsync(dto.Username);
+// //     if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+        
+// //         return Unauthorized("Invalid credentials");
+// //         var claims = new[]
+// //         {
+// //             new Claim(ClaimTypes.NameIdentifier, "1"),
+// //             new Claim(ClaimTypes.Name, dto.Username),
+// //             new Claim(ClaimTypes.Role, "HR")
+// //         };
+
+// //         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("QWERTYUIOPASDFGHJKLZXCVBNM1234qw"));
+// //         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+// //         var token = new JwtSecurityToken(
+// //             issuer: "jobportal",
+// //             audience: "applicants",
+// //             claims: claims,
+// //             expires: DateTime.Now.AddHours(1),
+// //             signingCredentials: creds);
+
+// //         return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+// //    // }
+
+// //     // return Unauthorized("Invalid credentials");
+// // }
+
+
+//         [Authorize(Roles = "HR")] 
+//         [HttpGet("secure")]
+//         public IActionResult SecureEndpoint()
+//         {
+//             return Ok("This is protected data for HR only!");
+//         }
+
+//  [HttpPost("jwt")]
+//     public async Task<IActionResult> JWTAsync([FromBody] LoginDTO dto)
+//     {
+//         var user = await _userManager.FindByNameAsync(dto.Username);
+//         if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+//             return Unauthorized("Invalid credentials");
+
+//         var claims = new[]
+//         {
+//             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+//             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+//             new Claim(ClaimTypes.Role, "HR") // Set user role
+//         };
+
+//         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("QWERTYUIOPASDFGHJKLZXCVBNM1234qw"));
+//         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+//         var token = new JwtSecurityToken(
+//             issuer: "jobportal",
+//             audience: null,
+//             claims: claims,
+//             expires: DateTime.UtcNow.AddHours(1),
+//             signingCredentials: creds
+//         );
+
+//         return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+//     }
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // [Authorize(Roles = "Admin")]
        [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDTO dto) 
     {
@@ -49,6 +177,63 @@ public class AuthController : ControllerBase
         return Ok(new { message = "Registered", role });
         
     }
+
+
+
+        
+[HttpPost("login")]
+public async Task<IActionResult> Login([FromBody] LoginDTO dto)
+{
+    // ✅ Find user
+    var user = await _userManager.FindByNameAsync(dto.Username);
+    if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+        return Unauthorized("Invalid credentials");
+
+    // ✅ Create Identity principal (User + Roles claims)
+    var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.UserName!),
+        new Claim(ClaimTypes.NameIdentifier, user.Id),   
+
+    };
+
+    var roles = await _userManager.GetRolesAsync(user);
+    foreach (var role in roles)
+    {
+        claims.Add(new Claim(ClaimTypes.Role, role));
+        
+    }
+
+    var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+
+    // ✅ Sign in with cookie 
+    await HttpContext.SignInAsync(
+        IdentityConstants.ApplicationScheme,
+        new ClaimsPrincipal(claimsIdentity),
+        new AuthenticationProperties
+        {
+            IsPersistent = true, // keeps login after browser close if cookie lifetime allows
+            ExpiresUtc = DateTime.UtcNow.AddHours(1)
+        });
+
+    // return Ok(new { message = "Login successful" });
+    return Ok(new { 
+        message = "Login successful", 
+        role = roles.FirstOrDefault() ?? "Applicant" 
+    });
+}
+
+ [HttpPost("logout")]
+            public async Task<IActionResult> Logout()
+            {
+                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+                return Ok(new { message = "Logged out successfully" });
+            }
+           
+
+}
+
+
 //             [HttpPost("login")]
 //         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
 //         {
@@ -172,119 +357,65 @@ public class AuthController : ControllerBase
 //     return Ok(new { token = tokenString });
 // }
 
-[HttpPost("login")]
-public async Task<IActionResult> Login([FromBody] LoginDTO dto)
-{
-    // ✅ Find user
-    var user = await _userManager.FindByNameAsync(dto.Username);
-    if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
-        return Unauthorized("Invalid credentials");
-
-    // ✅ Create Identity principal (User + Roles claims)
-    var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, user.UserName!),
-        new Claim(ClaimTypes.NameIdentifier, user.Id),   // <-- Add this
-
-    };
-
-    var roles = await _userManager.GetRolesAsync(user);
-    foreach (var role in roles)
-    {
-        claims.Add(new Claim(ClaimTypes.Role, role));
-        
-    }
-
-    var claimsIdentity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
-
-    // ✅ Sign in with cookie
-    await HttpContext.SignInAsync(
-        IdentityConstants.ApplicationScheme,
-        new ClaimsPrincipal(claimsIdentity),
-        new AuthenticationProperties
-        {
-            IsPersistent = true, // keeps login after browser close if cookie lifetime allows
-            ExpiresUtc = DateTime.UtcNow.AddHours(2)
-        });
-
-    return Ok(new { message = "Login successful" });
-}
+//  [Authorize(Roles = "Admin")]
 
 
-                    [HttpGet("verify-token")]
-                    [Authorize] // Requires any valid token
-            public IActionResult VerifyToken()
-            {
-                return Ok(new
-                {
-                    User.Identity.Name,
-                    Roles = User.Claims
-                        .Where(c => c.Type == ClaimTypes.Role)
-                        .Select(c => c.Value),
-                    Issued = DateTimeOffset.FromUnixTimeSeconds(
-                        long.Parse(User.FindFirst("iat")!.Value))
-                });
-            }
+            //         [HttpGet("verify-token")]
+            //         // [Authorize] // Requires any valid token
+            // public IActionResult VerifyToken()
+            // {
+            //     return Ok(new
+            //     {
+            //         // User.Identity.Name,
+            //         Roles = User.Claims
+            //             .Where(c => c.Type == ClaimTypes.Role)
+            //             .Select(c => c.Value),
+            //         Issued = DateTimeOffset.FromUnixTimeSeconds(
+            //             long.Parse(User.FindFirst("iat")!.Value))
+            //     });
+            // }
 
-            [HttpGet("debug-claims")]
-[Authorize]
-public IActionResult DebugClaims()
-{
-    return Ok(new
-    {
-        User.Identity?.Name,
-        Claims = User.Claims.Select(c => new { c.Type, c.Value }),
-        IsAuthenticated = User.Identity?.IsAuthenticated,
-        AuthenticationType = User.Identity?.AuthenticationType
-    });
-}
-
-// [HttpGet("decode-token")]
-// public IActionResult DecodeToken([FromQuery] string token)
+//             [HttpGet("debug-claims")]
+// [Authorize]
+// public IActionResult DebugClaims()
 // {
-//     var handler = new JwtSecurityTokenHandler();
-//     var jwtToken = handler.ReadJwtToken(token);
-    
-//     // Extract ALL claims (including standard ones like 'aud')
-//     var claims = jwtToken.Claims.Select(c => new { 
-//         c.Type, 
-//         c.Value,
-//         ValueType = c.ValueType 
-//     }).ToList();
-
 //     return Ok(new
 //     {
-//         Claims = claims,
-//         ValidTo = jwtToken.ValidTo,
-//         // Add issuer/audience explicitly
-//         Issuer = jwtToken.Issuer,
-//         Audience = jwtToken.Audiences.FirstOrDefault() 
+//         User.Identity?.Name,
+//         Claims = User.Claims.Select(c => new { c.Type, c.Value }),
+//         IsAuthenticated = User.Identity?.IsAuthenticated,
+//         AuthenticationType = User.Identity?.AuthenticationType
 //     });
 // }
-[HttpGet("decode-token")]
-public IActionResult DecodeToken([FromQuery] string token)
-{
-    var handler = new JwtSecurityTokenHandler();
-    var jwtToken = handler.ReadJwtToken(token);
-    
-    // Extract ALL claims (including standard ones)
-    var claims = jwtToken.Claims.Select(c => new { 
-        c.Type, 
-        c.Value,
-        ValueType = c.ValueType 
-    }).ToList();
 
-    // 👇 Handle audience as an array (since it can be multiple values)
-    var audiences = jwtToken.Audiences.ToList(); // Get all audiences
-    
-    return Ok(new
-    {
-        Claims = claims,
-        ValidTo = jwtToken.ValidTo,
-        Issuer = jwtToken.Issuer,
-        Audience = audiences.FirstOrDefault(), // Return first audience (or null)
-        AllAudiences = audiences              // Return full list for debugging
-    });
-}
 
-}
+
+
+
+            // [HttpGet("decode-token")]
+            // public IActionResult DecodeToken([FromQuery] string token)
+            // {
+            //     var handler = new JwtSecurityTokenHandler();
+            //     var jwtToken = handler.ReadJwtToken(token);
+                
+            //     // Extract ALL claims (including standard ones)
+            //     var claims = jwtToken.Claims.Select(c => new { 
+            //         c.Type, 
+            //         c.Value,
+            //         ValueType = c.ValueType 
+            //     }).ToList();
+
+            //     // 👇 Handle audience as an array (since it can be multiple values)
+            //     var audiences = jwtToken.Audiences.ToList(); // Get all audiences
+                
+            //     return Ok(new
+            //     {
+            //         Claims = claims,
+            //         ValidTo = jwtToken.ValidTo,
+            //         Issuer = jwtToken.Issuer,
+            //         Audience = audiences.FirstOrDefault(), // Return first audience (or null)
+            //         AllAudiences = audiences              // Return full list for debugging
+            //     });
+            // }
+
+            // }

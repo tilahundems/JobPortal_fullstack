@@ -401,3 +401,6 @@ C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\Jo
 C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\obj\Debug\net8.0\JobPortalAPI.pdb
 C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\obj\Debug\net8.0\JobPortalAPI.genruntimeconfig.cache
 C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\obj\Debug\net8.0\ref\JobPortalAPI.dll
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\MailKit.dll
+C:\Users\dtilahun\Desktop\Pro.Dev\JObportal_Abay\JobPortal_Production\Backend\JobPortalAPI\bin\Debug\net8.0\MimeKit.dll

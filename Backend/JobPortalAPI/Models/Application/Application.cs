@@ -15,7 +15,7 @@ public class Application
     [Required]
     public int ApplicantProfileId { get; set; } 
      [JsonIgnore]
-    public virtual ApplicantProfile? ApplicantProfile { get; set; }
+    public  virtual ApplicantProfile? ApplicantProfile { get; set; }
 
     [Required]
     public DateTime AppliedDate { get; set; } = DateTime.UtcNow;

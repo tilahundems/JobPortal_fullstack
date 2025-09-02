@@ -302,6 +302,23 @@ builder.Services.Configure<IdentityOptions>(opt =>
 });
 
 
+// // Add Authentication
+// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//     .AddJwtBearer(options =>
+//     {
+//         options.TokenValidationParameters = new TokenValidationParameters
+//         {
+//             ValidateIssuer = true,
+//             ValidateAudience = true,
+//             ValidateLifetime = true,
+//             ValidateIssuerSigningKey = true,
+//             ValidIssuer = "jobportal",
+//             ValidAudience = null,
+//             IssuerSigningKey = new SymmetricSecurityKey(
+//                 Encoding.UTF8.GetBytes("QWERTYUIOPASDFGHJKLZXCVBNM1234qw"))
+//         };
+//     });
+
 
 // // JWT Authentication
 // builder.Services.AddAuthentication(options =>
@@ -391,9 +408,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.AllowAnyOrigin()   // allow all origins
-                  .AllowAnyMethod()   // allow all HTTP methods
-                  .AllowAnyHeader();  // allow all headers
+            policy.WithOrigins("http://localhost:5173") // 👈 React dev server
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
         });
 });
 
@@ -408,6 +426,7 @@ builder.Services.AddControllers()
     // Allow reasonably sized resumes (adjust as needed)
     o.MultipartBodyLengthLimit = 10_000_000; // 10MB
 });
+builder.Services.AddSingleton<EmailService>();
 
 
 var app = builder.Build();
